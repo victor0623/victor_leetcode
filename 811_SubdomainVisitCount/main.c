@@ -162,6 +162,7 @@ char** subdomainVisits(char** cpdomains, int cpdomainsSize, int* returnSize) {
 	struct node *head = malloc(sizeof(struct node));
 	if (head == NULL)
 		return NULL;
+	head->next = NULL;
 
 	for (int i=0;i<cpdomainsSize;i++) {
 		if (*(cpdomains+i) == NULL)
