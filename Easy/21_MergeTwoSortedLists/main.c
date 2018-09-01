@@ -124,11 +124,67 @@ struct ListNode* mergeTwoLists(struct ListNode* l1, struct ListNode* l2) {
 	return result;
 }
 
+struct ListNode* mergeTwoLists2(struct ListNode* l1, struct ListNode* l2) {
+	if (l1 == NULL && l2 == NULL)
+		return NULL;
+
+	struct ListNode *node = malloc(sizeof(struct ListNode));
+
+	if (l1 != NULL && l2 != NULL) {
+		if (l1->val <= l2->val) {
+			node->val = l1->val;
+			l1 = l1->next;
+		}
+		else {
+			node->val = l2->val;
+			l2 = l2->next;
+		}
+	}
+	else if (l1 != NULL && l2 == NULL) {
+		node->val = l1->val;
+		l1 = l1->next;
+	}
+	else if (l1 == NULL && l2 != NULL) {
+		node->val = l2->val;
+		l2 = l2->next;
+	}
+
+	node->next = NULL;
+	struct ListNode *temp = node;
+
+	while (l1 != NULL || l2 != NULL) {
+		struct ListNode *inserted_node = malloc(sizeof(struct ListNode));
+		if (l1 != NULL && l2 != NULL) {
+			if (l1->val <= l2->val) {
+				inserted_node->val = l1->val;
+				l1 = l1->next;
+			}
+			else {
+				inserted_node->val = l2->val;
+				l2 = l2->next;
+			}
+		} else if (l1 != NULL && l2 == NULL) {
+			inserted_node->val = l1->val;
+			l1 = l1->next;
+		} else if (l1 == NULL && l2 != NULL) {
+			inserted_node->val = l2->val;
+			l2 = l2->next;
+		}
+
+		printf("inserted_node->val:%d\n", inserted_node->val);
+		inserted_node->next = NULL;
+		node->next = inserted_node;
+		printf("node->val:%d\n", node->val);
+		node = node->next;
+	}
+
+	return temp;
+}
+
 int main(void)
 {
 	struct ListNode *l1 = malloc(sizeof(struct ListNode));
 	struct ListNode *l2 = malloc(sizeof(struct ListNode));
-
 
 	l1->val = 1;
 	l1->next = NULL;
@@ -145,7 +201,7 @@ int main(void)
 	printf("List2:\n");
 	travel_nodes(l2);
 
-	struct ListNode *result = mergeTwoLists(l1, l2);
+	struct ListNode *result = mergeTwoLists2(l1, l2);
 	printf("Merged list:\n");
 	travel_nodes(result);
 	
